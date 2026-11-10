@@ -6,9 +6,31 @@ from pathlib import Path
 
 
 def save(path, data):
+    """Atomic publication; Windows readers can briefly block replacement.
+
+    Progress is advisory: skip a locked update after bounded retries. Final
+    results and errors are essential and must still report persistent failures.
+    """
+    import time
     temp = path.with_suffix('.tmp')
-    temp.write_text(json.dumps(data, ensure_ascii=False), encoding='utf-8')
-    temp.replace(path)
+    payload = json.dumps(data, ensure_ascii=False)
+    try:
+        for attempt in range(21):
+            try:
+                temp.write_text(payload, encoding='utf-8')
+                temp.replace(path)
+                return True
+            except PermissionError:
+                if attempt == 20:
+                    if path.name == 'progress.json':
+                        return False
+                    raise
+                time.sleep(.1)
+    finally:
+        try:
+            temp.unlink(missing_ok=True)
+        except PermissionError:
+            pass
 
 
 def run(folder):
