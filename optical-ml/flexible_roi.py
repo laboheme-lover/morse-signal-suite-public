@@ -16,21 +16,25 @@ def crop_for_model(frame,roi):
 
 def extract_flexible(path,roi,progress=None):
  meta=splitter.info(path);x,y,w,h=map(int,roi)
- if w==40 and h==40 and x+20>=64 and y+20>=64 and x+84<=meta['width'] and y+84<=meta['height']:
-  t,f,m=extract_features(path,roi,progress);m.update(roi=roi,roi_adapter='legacy_40px',edge_padding=False);return t,f,m
- before=splitter.identity(path);cap=cv2.VideoCapture(str(path));values=[];times=[];padded=False
+ # Retain the evaluated 40px crop exactly, without calling its list-based reader.
+ legacy=w==40 and h==40 and x+20>=64 and y+20>=64 and x+84<=meta['width'] and y+84<=meta['height']
+ before=splitter.identity(path);cap=cv2.VideoCapture(str(path));padded=False
+ # Only timestamps and four brightness features are retained, never video frames.
+ count=int(meta['frames']);values=np.empty((count,4),dtype=np.float32);times=np.empty(count,dtype=np.float64);n=0
  try:
   while True:
    ok,frame=cap.read()
    if not ok:break
+   if n>=count:raise ValueError('動画のフレーム数がメタデータと一致しません。')
+   if frame.shape[:2]!=(meta['height'],meta['width']):raise ValueError('動画の途中で解像度が変わっています。')
    crop,edge=crop_for_model(frame,roi);padded|=edge
-   values.append(features(crop[None])[0]);times.append(cap.get(cv2.CAP_PROP_POS_MSEC)/1000)
-   if progress and len(times)%300==0:progress(min(.99,len(times)/meta['frames']))
+   values[n]=features(crop[None])[0];times[n]=cap.get(cv2.CAP_PROP_POS_MSEC)/1000;n+=1
+   if progress and n%300==0:progress(min(.99,n/count))
  finally:cap.release()
- if before!=splitter.identity(path) or len(times)!=meta['frames'] or len(times)<3:raise ValueError('動画全体を安定して読み取れませんでした。')
+ if before!=splitter.identity(path) or n!=count or n<3:raise ValueError('動画全体を安定して読み取れませんでした。')
  if times[0]>=times[1]:times[0]=splitter.verify_initial_timestamp(path,times[:3],meta['fps'])[0][0]
  times,_=splitter.correct_initial_timestamp(times,meta['fps'])
  if not np.isfinite(times).all() or np.any(np.diff(times)<=0):raise ValueError('時刻が不正です。')
- meta.update(roi=list(roi),roi_adapter='scaled_neighborhood_experimental',edge_padding=padded)
+ meta.update(roi=list(roi),roi_adapter='legacy_40px' if legacy else 'scaled_neighborhood_experimental',edge_padding=padded)
  if progress:progress(1.)
  return times,np.asarray(values),meta

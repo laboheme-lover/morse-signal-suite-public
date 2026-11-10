@@ -18,10 +18,14 @@ show_controls()
 if os.environ.get('MORSE_CLOUD')=='1':
  from runtime import upload_video
  path=upload_video()
-else:path=st.text_input('動画ファイルのフルパス')
+else:
+ st.caption('PC版：5 GB・20分以内。ファイルを直接読み込みます。')
+ path=st.text_input('動画ファイルのフルパス')
 name='cnn'
 if not path:st.stop()
-try:meta=splitter.info(path)
+try:
+ from desktop_video import inspect_local
+ meta=inspect_local(path)
 except Exception as e:st.error(str(e));st.stop()
 source=json.dumps(splitter.identity(path),sort_keys=True)
 if st.session_state.get('ml_source')!=source:

@@ -26,6 +26,8 @@ def run(folder):
             watchdog=threading.Timer(900,lambda:os._exit(124))
             watchdog.daemon=True;watchdog.start()
         request = json.loads((folder/'request.json').read_text(encoding='utf-8'))
+        from desktop_video import inspect_local
+        inspect_local(request['path'])
         save(folder/'progress.json', {'fraction': 0., 'stage': 'モデルを読み込んでいます'})
         checkpoint = torch.load(CHECKPOINT, map_location='cpu', weights_only=False)
         def progress(value):
