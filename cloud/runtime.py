@@ -5,6 +5,7 @@ from pathlib import Path
 MAX_BYTES=50*1024*1024
 VIDEO_MAX_BYTES=300*1024*1024
 MAX_SECONDS=120
+VIDEO_MAX_SECONDS=300
 
 def configure():
     os.environ['MORSE_CLOUD']='1'
@@ -18,7 +19,8 @@ def inspect_media(path,kind):
         p=subprocess.run([tool,'-v','error','-show_format','-show_streams','-of','json',str(path)],capture_output=True,timeout=20,check=True)
         data=json.loads(p.stdout)
         duration=float(data['format']['duration'])
-        if not math.isfinite(duration) or not 0<duration<=MAX_SECONDS:raise ValueError('公開版は120秒以内のファイルに対応します。')
+        limit=VIDEO_MAX_SECONDS if kind=='video' else MAX_SECONDS
+        if not math.isfinite(duration) or not 0<duration<=limit:raise ValueError(f'公開版は{limit}秒以内のファイルに対応します。')
         streams=[s for s in data['streams'] if s.get('codec_type')==kind]
         if not streams:raise ValueError('選択した形式の信号が見つかりません。')
         if kind=='video':
@@ -50,7 +52,7 @@ def store_upload(payload,suffix,state,kind):
 
 def upload_video():
     import streamlit as st
-    st.caption('300 MB・120秒以内／フルHD相当・60fpsまで。クラウドで処理します。')
+    st.caption('300 MB・5分以内／フルHD相当・60fpsまで。クラウドで処理します。')
     up=st.file_uploader('光モールス動画をアップロード',type=['mp4','mov'],max_upload_size=300,disabled=bool(st.session_state.get('ml_job')))
     if up is None:return ''
     try:return store_upload(up.getvalue(),Path(up.name).suffix.lower(),st.session_state,'video')

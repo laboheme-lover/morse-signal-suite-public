@@ -10,9 +10,18 @@ class CloudTests(unittest.TestCase):
     def probe(self,duration=5,width=320,height=240,fps='30/1'):
         return subprocess.CompletedProcess([],0,json.dumps({'format':{'duration':str(duration)},'streams':[{'codec_type':'video','width':width,'height':height,'avg_frame_rate':fps}]}).encode(),b'')
     def test_limits_and_invalid_media(self):
-        for kwargs in [{'duration':121},{'duration':float('nan')},{'width':4096,'height':2160},{'fps':'120/1'},{'fps':'0/0'}]:
+        for kwargs in [{'duration':301},{'duration':float('nan')},{'width':4096,'height':2160},{'fps':'120/1'},{'fps':'0/0'}]:
             with patch('runtime.shutil.which',return_value='ffprobe'),patch('runtime.subprocess.run',return_value=self.probe(**kwargs)):
                 with self.assertRaises(ValueError):runtime.inspect_media('unused.mp4','video')
+    def test_duration_limits_by_kind(self):
+        for kind,seconds,accepted in [('video',120,True),('video',300,True),('video',300.01,False),('audio',120,True),('audio',120.01,False)]:
+            data=json.loads(self.probe(duration=seconds).stdout)
+            data['streams'][0]['codec_type']=kind
+            probe=subprocess.CompletedProcess([],0,json.dumps(data).encode(),b'')
+            with self.subTest(kind=kind,seconds=seconds), patch('runtime.shutil.which',return_value='ffprobe'),patch('runtime.subprocess.run',return_value=probe):
+                if accepted:runtime.inspect_media('unused',kind)
+                else:
+                    with self.assertRaises(ValueError):runtime.inspect_media('unused',kind)
     def test_upload_size_by_kind(self):
         class Oversized:
             def __len__(self):return 300*1024*1024+1
