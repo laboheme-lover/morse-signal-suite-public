@@ -15,4 +15,4 @@ Streamlit Community Cloudで同じ公開リポジトリから2つのアプリを
 
 アップロードはクラウド側で処理されます。機密情報を含む音声・動画はアップロードしないでください。モデルと認識規則はPC採用版と同じですが、無料サーバーでの速度や同時利用数は別途確認が必要です。
 
-配備には所有者のStreamlitへのログインとGitHub連携が必要です。公開URLは配備成功後にルートREADMEへ記録します。ソースをpushしただけではオンライン公開完了ではありません。
+配備には所有者のStreamlitへのログインとGitHub連携が必要です。2026-11-10に両方を配備し、サンプルの認識まで確認しました。公開URLは [音声](https://wabun-morse-audio.streamlit.app/) と [光](https://wabun-morse-optical.streamlit.app/) です。ソースのmainブランチへの更新は配備先にも反映されます。
