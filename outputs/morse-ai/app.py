@@ -45,7 +45,7 @@ with st.sidebar:
 source=st.radio('音声の入力方法',['ファイルをアップロード','サンプル：イロハ','サンプル：イ（ヤチツ）ロ'],horizontal=True)
 payload=None;name='';suffix='.wav'
 if source=='ファイルをアップロード':
-    uploaded=st.file_uploader('WAV / MP3を選択',type=['wav','mp3'])
+    uploaded=st.file_uploader('WAV / MP3を選択',type=['wav','mp3'],max_upload_size=50)
     if uploaded is not None:
         payload=uploaded.getvalue();name=uploaded.name;suffix=Path(name).suffix.lower()
 else:

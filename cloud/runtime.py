@@ -3,6 +3,7 @@ import hashlib, json, math, os, shutil, subprocess, tempfile, threading
 from pathlib import Path
 
 MAX_BYTES=50*1024*1024
+VIDEO_MAX_BYTES=300*1024*1024
 MAX_SECONDS=120
 
 def configure():
@@ -30,7 +31,8 @@ def inspect_media(path,kind):
         raise ValueError('ファイルの形式・長さを検査できませんでした。') from None
 
 def store_upload(payload,suffix,state,kind):
-    if not payload or len(payload)>MAX_BYTES:raise ValueError('ファイルは50 MB以内にしてください。')
+    limit=VIDEO_MAX_BYTES if kind=='video' else MAX_BYTES
+    if not payload or len(payload)>limit:raise ValueError(f'ファイルは{limit//(1024*1024)} MB以内にしてください。')
     digest=hashlib.sha256(payload).hexdigest()
     old=state.get('cloud_'+kind)
     if old and old['digest']==digest and Path(old['path']).exists():return old['path']
@@ -48,9 +50,8 @@ def store_upload(payload,suffix,state,kind):
 
 def upload_video():
     import streamlit as st
-    st.info('公開試用版：動画はクラウドに送信して処理します。50 MB・120秒・フルHD相当・60fpsまで。機密情報を含む動画は送信しないでください。')
-    st.caption('一時ファイルは約30分後に削除します。無料サービスの休止・再起動で結果が失われることがあります。')
-    up=st.file_uploader('光モールス動画をアップロード',type=['mp4','mov'],disabled=bool(st.session_state.get('ml_job')))
+    st.caption('300 MB・120秒以内／フルHD相当・60fpsまで。クラウドで処理します。')
+    up=st.file_uploader('光モールス動画をアップロード',type=['mp4','mov'],max_upload_size=300,disabled=bool(st.session_state.get('ml_job')))
     if up is None:return ''
     try:return store_upload(up.getvalue(),Path(up.name).suffix.lower(),st.session_state,'video')
     except ValueError as e:st.error(str(e));return ''

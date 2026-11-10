@@ -13,6 +13,20 @@ class CloudTests(unittest.TestCase):
         for kwargs in [{'duration':121},{'duration':float('nan')},{'width':4096,'height':2160},{'fps':'120/1'},{'fps':'0/0'}]:
             with patch('runtime.shutil.which',return_value='ffprobe'),patch('runtime.subprocess.run',return_value=self.probe(**kwargs)):
                 with self.assertRaises(ValueError):runtime.inspect_media('unused.mp4','video')
+    def test_upload_size_by_kind(self):
+        class Oversized:
+            def __len__(self):return 300*1024*1024+1
+        with self.assertRaisesRegex(ValueError,'300 MB'):
+            runtime.store_upload(Oversized(), '.mp4', {}, 'video')
+        class AudioOversized:
+            def __len__(self):return 50*1024*1024+1
+        with self.assertRaisesRegex(ValueError,'50 MB'):
+            runtime.store_upload(AudioOversized(), '.wav', {}, 'audio')
+        # A real >50 MB payload must pass the video gate and reach media validation.
+        with patch('runtime.inspect_media',side_effect=ValueError('probe reached')):
+            with self.assertRaisesRegex(ValueError,'probe reached'):
+                runtime.store_upload(bytes(51*1024*1024), '.mp4', {}, 'video')
+        self.assertEqual(runtime.VIDEO_MAX_BYTES,300*1024*1024)
     def test_session_isolation_and_cleanup(self):
         a={};b={}
         try:
