@@ -14,7 +14,7 @@ class CloudTests(unittest.TestCase):
             with patch('runtime.shutil.which',return_value='ffprobe'),patch('runtime.subprocess.run',return_value=self.probe(**kwargs)):
                 with self.assertRaises(ValueError):runtime.inspect_media('unused.mp4','video')
     def test_duration_limits_by_kind(self):
-        for kind,seconds,accepted in [('video',120,True),('video',300,True),('video',300.01,False),('audio',120,True),('audio',120.01,False)]:
+        for kind,seconds,accepted in [('video',120,True),('video',300,True),('video',300.01,False),('audio',120,True),('audio',300,True),('audio',300.01,False)]:
             data=json.loads(self.probe(duration=seconds).stdout)
             data['streams'][0]['codec_type']=kind
             probe=subprocess.CompletedProcess([],0,json.dumps(data).encode(),b'')

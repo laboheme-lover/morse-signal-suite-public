@@ -33,7 +33,7 @@ st.title('和文モールス認識')
 st.caption('採用モデル：M3 ／ 前処理：baseline ／ 丸括弧内も和文')
 cloud=os.environ.get('MORSE_CLOUD')=='1'
 st.caption('音声を文字ごとに分け、認識候補を確認できます。'+('処理はクラウド上で行います。' if cloud else '処理はこのPC内で行います。'))
-if cloud:st.info('公開試用版：50 MB・120秒以内。音声はクラウドへ送信されます。機密情報を含む音声は送らないでください。無料サービスの休止・再起動で結果が失われる場合があります。')
+if cloud:st.info('公開試用版：50 MB・300秒（5分）以内。音声はクラウドへ送信されます。機密情報を含む音声は送らないでください。無料サービスの休止・再起動で結果が失われる場合があります。')
 with st.sidebar:
     st.header('認識設定')
     auto_gap=True;gap=.2;auto_frequency=True;frequency=700.;shift=False;mixed=False
