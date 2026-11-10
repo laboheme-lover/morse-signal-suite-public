@@ -1,6 +1,7 @@
 """Isolated, cancellable recognition worker. No Streamlit calls here."""
 import json
 import sys
+import os,shutil,threading
 from pathlib import Path
 
 
@@ -17,6 +18,13 @@ def run(folder):
         from predict import classify_features
         from flexible_roi import extract_flexible
         verify_release()
+        if os.environ.get('MORSE_CLOUD')=='1':
+            import splitter
+            splitter.FFMPEG=Path(shutil.which('ffmpeg') or 'ffmpeg')
+            torch.set_num_threads(1)
+            # A disconnected browser must not leave an unbounded cloud job running.
+            watchdog=threading.Timer(300,lambda:os._exit(124))
+            watchdog.daemon=True;watchdog.start()
         request = json.loads((folder/'request.json').read_text(encoding='utf-8'))
         save(folder/'progress.json', {'fraction': 0., 'stage': 'モデルを読み込んでいます'})
         checkpoint = torch.load(CHECKPOINT, map_location='cpu', weights_only=False)

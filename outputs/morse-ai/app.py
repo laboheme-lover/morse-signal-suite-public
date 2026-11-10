@@ -31,7 +31,9 @@ def result_json(result):
 
 st.title('和文モールス認識')
 st.caption('採用モデル：M3 ／ 前処理：baseline ／ 丸括弧内も和文')
-st.caption('音声を文字ごとに分け、認識候補を確認できます。処理はこのPC内で行います。')
+cloud=os.environ.get('MORSE_CLOUD')=='1'
+st.caption('音声を文字ごとに分け、認識候補を確認できます。'+('処理はクラウド上で行います。' if cloud else '処理はこのPC内で行います。'))
+if cloud:st.info('公開試用版：50 MB・120秒以内。音声はクラウドへ送信されます。機密情報を含む音声は送らないでください。無料サービスの休止・再起動で結果が失われる場合があります。')
 with st.sidebar:
     st.header('認識設定')
     auto_gap=True;gap=.2;auto_frequency=True;frequency=700.;shift=False;mixed=False
@@ -66,6 +68,10 @@ if st.button('認識する',type='primary',disabled=not payload):
             predictor=get_predictor()
             with tempfile.TemporaryDirectory(prefix='morse_upload_') as temporary:
                 path=Path(temporary)/('input'+suffix);path.write_bytes(payload)
+                if cloud:
+                    from runtime import inspect_media,MAX_BYTES
+                    if len(payload)>MAX_BYTES:raise ValueError('50 MB以内にしてください。')
+                    inspect_media(path,'audio')
                 audio=load_audio(path,predictor.single.config)
             if len(audio)>16000*1800:raise ValueError('音声は30分以内に分けてください。')
             from threadpoolctl import threadpool_limits

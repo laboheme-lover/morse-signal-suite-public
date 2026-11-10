@@ -55,3 +55,5 @@ jobs:
         run: python ci/test_web.py
       - name: Test Android common logic with synthetic inputs
         run: python ci/test_android_core.py
+      - name: Test cloud entry points and upload boundaries
+        run: python ci/test_cloud.py

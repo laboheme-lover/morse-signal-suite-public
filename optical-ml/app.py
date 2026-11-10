@@ -1,5 +1,5 @@
 """Optical ML recognition with an interactive original-pixel ROI editor."""
-import sys,json
+import sys,json,os
 from pathlib import Path
 import streamlit as st
 import torch
@@ -17,7 +17,10 @@ from job_controls import start_job,show_controls
 show_controls()
 st.caption(f'採用バージョン：{VERSION} ／ CNN＋周期自動推定＋入力時間補正')
 st.info('No.53～86の34電文・12条件で評価済み。複合加工では認識保留も発生しました。実際の雨・霧や、光源の自動検出を含む全工程の性能は未確認です。')
-path=st.text_input('動画ファイルのフルパス')
+if os.environ.get('MORSE_CLOUD')=='1':
+ from runtime import upload_video
+ path=upload_video()
+else:path=st.text_input('動画ファイルのフルパス')
 name='cnn'
 st.caption('光源周囲の明るさの時系列を分類します。音声M3とは別モデルです。')
 if not path:st.stop()

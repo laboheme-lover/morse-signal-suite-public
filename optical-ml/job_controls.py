@@ -3,11 +3,15 @@ import json
 import subprocess
 import sys
 import tempfile
+import os,shutil,threading
 from pathlib import Path
 
 
 def start_job(request, key):
     folder = Path(tempfile.mkdtemp(prefix='optical_recognition_'))
+    if os.environ.get('MORSE_CLOUD')=='1':
+        cleanup=threading.Timer(1800,shutil.rmtree,args=(folder,),kwargs={'ignore_errors':True})
+        cleanup.daemon=True;cleanup.start()
     (folder/'request.json').write_text(json.dumps(request, ensure_ascii=False), encoding='utf-8')
     with (folder/'worker.log').open('w', encoding='utf-8') as log:
         process = subprocess.Popen([sys.executable, str(Path(__file__).with_name('recognition_job.py')), str(folder)],
