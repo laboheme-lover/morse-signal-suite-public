@@ -32,6 +32,7 @@ jobs:
         run: |
           python ci/run_tests.py
           python optical-ml/test_job_save.py
+          python optical-ml/test_video_compression.py
   web-and-android-core:
     runs-on: ubuntu-latest
     timeout-minutes: 20

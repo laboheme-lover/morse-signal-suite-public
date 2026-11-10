@@ -27,6 +27,10 @@ try:
  from desktop_video import inspect_local
  meta=inspect_local(path)
 except Exception as e:st.error(str(e));st.stop()
+import os
+if os.environ.get('MORSE_CLOUD')!='1':
+ from compression_ui import render as render_compression
+ render_compression(path)
 source=json.dumps(splitter.identity(path),sort_keys=True)
 if st.session_state.get('ml_source')!=source:
  st.session_state['ml_source']=source
