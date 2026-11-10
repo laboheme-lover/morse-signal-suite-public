@@ -1,0 +1,5 @@
+# Small CPU-only test environment, separate from the full interactive app.
+numpy==1.26.4
+scipy==1.13.1
+soundfile==0.12.1
+opencv-python-headless==4.10.0.84

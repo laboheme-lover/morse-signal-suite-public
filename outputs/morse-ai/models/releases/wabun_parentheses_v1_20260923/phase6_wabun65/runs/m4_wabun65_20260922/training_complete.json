@@ -1,0 +1,11 @@
+{
+  "status": "complete",
+  "best_epoch": 29,
+  "epochs_completed": 30,
+  "elapsed_seconds": 1041.3636717000009,
+  "train_samples": 13650,
+  "validation_samples": 2925,
+  "parameters": 62289,
+  "checkpoint_sha256": "d47c51ebdc79449810b90331379b32e0f39b597fcb837ea20d919154cf3b64b9",
+  "selection": "minimum_validation_cross_entropy"
+}

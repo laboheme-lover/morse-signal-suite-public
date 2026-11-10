@@ -1,0 +1,36 @@
+:root {color-scheme: dark; font-family: system-ui, sans-serif; color: #e5ebed; background: #0a0d0f;}
+* {box-sizing: border-box;}
+body {margin: 0;}
+main {max-width: 760px; margin: 0 auto; padding: 28px 20px 130px;}
+h1 {font-size: clamp(28px, 5vw, 40px); line-height: 1.25; margin: 12px 0 18px;}
+h2 {font-size: 21px;}
+p {line-height: 1.65;}
+.eyebrow {letter-spacing: .12em; color: #82bacb; font-size: 12px;}
+.notice {border-left: 3px solid #d8b76a; padding: 12px 18px; background: #1b1c19; margin: 24px 0;}
+.notice p {font-size: 14px; margin: 8px 0;}
+fieldset {border: 0; padding: 0; margin: 24px 0; min-width: 0;}
+label {display: block; font-weight: 600;}
+textarea {width: 100%; margin-top: 8px; padding: 14px; font: inherit; font-size: 22px; color: #f2f5f5; background: #141c21; border: 1px solid #53636c; border-radius: 6px;}
+button {font: inherit; min-height: 48px; padding: 10px 18px; border-radius: 6px; border: 1px solid #53636c; background: #22303a; color: #f2f5f5; cursor: pointer;}
+button:focus-visible, textarea:focus-visible, input:focus-visible {outline: 3px solid #c9e2eb; outline-offset: 3px;}
+button:disabled {opacity: .45; cursor: not-allowed;}
+#start {background: #285668;}
+.ack {font-size: 15px; margin-top: 22px; line-height: 1.7;}
+input[type=checkbox] {width: 22px; height: 22px; vertical-align: middle; margin-right: 8px;}
+.hint, .timing {font-size: 14px; color: #b6c3c9;}
+.actions {display: flex; flex-wrap: wrap; gap: 12px; margin: 24px 0;}
+#error {white-space: pre-wrap; color: #f4cc83; overflow-wrap: anywhere;}
+#transmit-text {overflow-wrap: anywhere;}
+.table-wrap {max-height: 220px; overflow: auto; border: 1px solid #36464d;}
+table {width: 100%; border-collapse: collapse;}
+td, th {padding: 9px 12px; text-align: left; border-bottom: 1px solid #36464d;}
+td:last-child {font-family: monospace; letter-spacing: .15em;}
+.stop-bar {position: fixed; z-index: 30; bottom: 0; left: 0; width: 100%; padding: 14px 20px max(14px, env(safe-area-inset-bottom)); background: #111719; display: flex; gap: 16px; align-items: center;}
+.stop-bar span {font-size: 13px; color: #b6c3c9;}
+#stop {background: #3b3931; border-color: #c5b383; font-weight: 700;}
+[hidden] {display: none !important;}
+#stage {position: fixed; inset: 0; z-index: 20; background: #000000;}
+#stage-status {position: absolute; top: 22px; left: 0; width: 100%; text-align: center; color: #a1a7aa;}
+#lamp {position: absolute; left: 50%; top: 50%; width: 48px; height: 48px; transform: translate(-50%, -50%); background: #000000;}
+#lamp.on {background: #ffffff;}
+/* No animations, transitions, red light or full-screen flashing. */

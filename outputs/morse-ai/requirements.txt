@@ -1,0 +1,9 @@
+# Milestones 1-10. CPU build works without an NVIDIA GPU.
+--extra-index-url https://download.pytorch.org/whl/cpu
+numpy==1.26.4
+scipy==1.13.1
+librosa==0.10.2.post1
+soundfile==0.12.1
+matplotlib==3.9.2
+torch==2.14.0+cpu
+streamlit==1.64.0

@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>和文モールス 点滅送信</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+<main id="controls">
+  <header><p class="eyebrow">OPTICAL SENDER / 第1段階</p><h1>和文モールス<br>点滅送信</h1>
+    <p>短い文章を、中央の四角形で1回だけ送信します。</p></header>
+  <aside class="notice"><strong>開始前に確認してください</strong>
+    <p>白い光が点滅します。光の点滅に敏感な方は使用を避け、不快に感じたら停止してください。小さい領域でも安全性は保証されません。</p>
+    <p>端末の画面消灯時間を送信時間より長くしてください。最初は「イ」1文字、暗い背景・距離1mから確認します。</p>
+  </aside>
+  <fieldset id="input-controls" disabled>
+    <label for="message">送る文章</label>
+    <textarea id="message" rows="2" spellcheck="false" autocomplete="off">イ</textarea>
+    <p class="hint">通常サイズのカナ・数字・長音（ー）・区切点（、）・段落（」）に対応。濁点は別単位へ分解。空白・改行・小書きカナ・括弧・英字は送れません。</p>
+    <button id="prepare" type="button">送信内容を確認</button>
+    <label class="ack"><input id="ack" type="checkbox"> 点滅の注意と画面消灯時間を確認しました</label>
+  </fieldset>
+  <p id="error" role="alert"></p>
+  <section id="preview" hidden aria-labelledby="preview-title">
+    <h2 id="preview-title">今回送る内容</h2>
+    <p>実際に送る表記：<strong id="transmit-text"></strong></p>
+    <p id="duration"></p>
+    <div class="table-wrap"><table><thead><tr><th>単位</th><th>原文の位置</th><th>送る文字</th><th>符号</th></tr></thead><tbody id="tokens"></tbody></table></div>
+  </section>
+  <p class="timing">短点 200ms / 長点 600ms<br>符号内 200ms / 文字間 600ms / 開始前 3秒<br>上限 60秒・1回のみ / 遅延監視 50ms</p>
+  <div class="actions"><button id="start" type="button" disabled>3秒待って送信開始</button>
+    <button id="save-plan" type="button" disabled>予定JSONを保存</button>
+    <button id="save-log" type="button" disabled>送信ログを保存</button></div>
+  <p id="status" role="status">対応表を読み込み中…</p>
+  <p class="hint">予定とログは別々に保存してください。ログはブラウザの表示切替処理時刻であり、実発光や撮影時刻ではありません。PCへの自動転送は行いません。</p>
+</main>
+<section id="stage" hidden aria-label="点滅送信領域"><p id="stage-status">開始前待機（3秒）</p><div id="lamp" aria-hidden="true"></div></section>
+<div class="stop-bar"><button id="stop" type="button">停止・消灯</button><span>いつでも停止できます</span></div>
+<noscript>JavaScriptを有効にしてください。無効な状態では点滅しません。</noscript>
+</body>
+</html>

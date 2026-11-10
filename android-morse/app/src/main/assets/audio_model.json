@@ -1,0 +1,48 @@
+{
+  "version": "M3-wabun-parentheses-v1",
+  "source_sha256": "cfebe48a3976a0e97c897b8a1867fbc8e946916e8f2d5e1cd8051eb15135c02f",
+  "config": {
+    "seed": 23456,
+    "sample_rate": 16000,
+    "preprocessing": {
+      "band_hz": [
+        300,
+        1400
+      ],
+      "filter_order": 4,
+      "frame_ms": 20,
+      "hop_ms": 10,
+      "floor_quantile": 0.1,
+      "ceiling_quantile": 0.95
+    },
+    "model": {
+      "channels": [
+        24,
+        48
+      ],
+      "kernel_size": 5,
+      "hidden_size": 64,
+      "dropout": 0.15,
+      "classes": 65,
+      "branch_kernels": [
+        3,
+        5,
+        9
+      ]
+    },
+    "training": {
+      "epochs": 30,
+      "batch_size": 128,
+      "learning_rate": 0.002,
+      "weight_decay": 0.0001,
+      "patience": 7,
+      "gradient_clip": 5.0,
+      "threads": 4
+    },
+    "selection": "minimum_validation_cross_entropy",
+    "architecture": "M3_multiscale_1dcnn_bigru__wabun65"
+  },
+  "runtime": "Java CPU float32 CNN+BiGRU; float64 DSP",
+  "model_sha256": "1c18f7088b11e0b0972c807af1f3b363b850b2f5fa0bb77f86e0e4d27e6bc9c6",
+  "filters_sha256": "c1e8dbc6b2ab6e873dded56dc76c582614fe51406da09d214c50284a3de6e8f0"
+}

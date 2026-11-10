@@ -1,0 +1,8 @@
+{
+  "seed": 23456,
+  "sample_rate": 16000,
+  "preprocessing": {"band_hz": [300, 1400], "filter_order": 4, "frame_ms": 20, "hop_ms": 10, "floor_quantile": 0.10, "ceiling_quantile": 0.95},
+  "model": {"channels": [24, 48], "kernel_size": 5, "hidden_size": 64, "dropout": 0.15, "classes": 36},
+  "training": {"epochs": 30, "batch_size": 128, "learning_rate": 0.002, "weight_decay": 0.0001, "patience": 7, "gradient_clip": 5.0, "threads": 4},
+  "selection": "minimum_validation_cross_entropy"
+}

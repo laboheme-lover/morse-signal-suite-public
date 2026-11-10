@@ -1,0 +1,35 @@
+# Local environments / credentials
+.venv/
+.toolchain/
+.gradle/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.cache/
+node_modules/
+local.properties
+.env
+.env.*
+!.env.example
+*.jks
+*.keystore
+*.pem
+*.key
+# Runtime data, generated outputs and device records
+**/build/
+**/dist/
+**/test-results/
+**/test-data/
+**/splits/
+**/cache/
+**/corpus/
+**/recordings_video/
+**/assets/batches.json
+*.log
+*.wav
+*.mp3
+*.mp4
+*.avi
+*.npy
+*.npz
+*.apk

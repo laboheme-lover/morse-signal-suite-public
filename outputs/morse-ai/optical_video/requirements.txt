@@ -1,0 +1,2 @@
+# Optional video component; compatible with the existing NumPy 1.26.4.
+opencv-python-headless==4.10.0.84

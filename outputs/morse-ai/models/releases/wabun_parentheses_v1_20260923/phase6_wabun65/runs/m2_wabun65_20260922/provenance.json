@@ -1,0 +1,31 @@
+{
+  "started_at": "2026-09-22T08:22:18.993594+00:00",
+  "python": "3.11.9",
+  "torch": "2.14.0+cpu",
+  "numpy": "1.26.4",
+  "scipy": "1.13.1",
+  "soundfile": "0.12.1",
+  "device": "cpu",
+  "selection": "minimum_validation_cross_entropy",
+  "inputs": {
+    "train.csv": "387103f95ae2660a94fd3c0594ce4d2eccad0dea078ccc80911f027c8926ad05",
+    "validation.csv": "59959d8c2c105812e910fbf09c11cbc3709c0e0bab631403125c172f798a414e",
+    "label_mapping.json": "62902d9dac03bde72c59e897b1feb768aec68c85671f4116fcde93c2a819ebd6"
+  },
+  "code_hashes": {
+    "common.py": "49af25eb4371504bf2f1a1919dc12fa242fdaf7b3df49872deb33c1803eb6b85",
+    "prepare.py": "0e8ff8a07f1d7acd71ec9d2206c43a6c3b3c19b501c071a8da4454c6b5b943b8",
+    "test_wabun.py": "fa80d28321642f2b1ca1648568887d17e1ccd96a6ca3a14e254f1cb716e7f05b",
+    "train.py": "8463824280dc55f6dc9671e446c0d079ce3103954258a517e19da21bbcd319b9",
+    "../phase2_m1/m1/data.py": "09f7f858af44301c416c30585f17169432a4dcc3b640e56c0b28062c83dff019",
+    "../phase2_m1/m1/model.py": "893ee9a0a35407c862f22a613a9747a562cda07b74ff66375c7da58246bb5f6f",
+    "../phase2_m1/m1/utils.py": "d1ff22ab0b74e6a310f3609588f1a67d257b9ab49c27cd042b8968ca05f1a1b5",
+    "../phase2_m1/m1/__init__.py": "5cbcc6b7bbe785bf35eb83f953db1609eaedab7409af66abf1f4a18977c85516",
+    "../phase3_m2/m2/model.py": "85ff16bcd1fdfac958b93f6c6928feffc0432e3ba9cb4341c672f574162ca842",
+    "../phase3_m2/m2/__init__.py": "d86a4aec1bbb822c302e7fae6bc3f1b721bcd5ec9fd6474172aad89029d4ca49",
+    "../phase4_m3/m3/model.py": "72d56c92f42ca69096cec83222a373e818acd4db37efcbcaff6ca90abe422b7a",
+    "../phase4_m3/m3/__init__.py": "dd75ab23503ffef7068ec725e647c290dfdf5ee68867350035e464305fdb315c",
+    "../phase5_m4/m4/model.py": "00294774530e130133bc1a623b2256f2975f154208380a73da5f964a574cc01f",
+    "../phase5_m4/m4/__init__.py": "e951a3ca44e9c3ed977b0fa523306425d5c404affb8463e381b1c0752df5bb0c"
+  }
+}
